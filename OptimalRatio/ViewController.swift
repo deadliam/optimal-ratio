@@ -59,17 +59,34 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
         if WeightField == notification.object as? NSTextField {
             let characterSet: CharacterSet = (CharacterSet(charactersIn: numSet).inverted as NSCharacterSet) as CharacterSet
             WeightField.stringValue = (WeightField.stringValue.components(separatedBy: characterSet) as NSArray).componentsJoined(by: "")
+            
         }
         if HeightField == notification.object as? NSTextField {
             let characterSet: CharacterSet = (CharacterSet(charactersIn: numSet).inverted as NSCharacterSet) as CharacterSet
             HeightField.stringValue = (HeightField.stringValue.components(separatedBy: characterSet) as NSArray).componentsJoined(by: "")
         }
+        
+        let weightValue = 50
+        if Int(self.WeightField.stringValue)! > weightValue {
+            self.WeightField.stringValue = String("")
+            runMyAlert(alertMessage: "The Weight should be under \(weightValue) kg")
+        }
+        
+//        if self.WeightField.stringValue.characters.count > 1 {
+//            self.WeightField.stringValue = String(self.WeightField.stringValue.characters.last!)
+//        }
+        
     }
     
-//    func comboBoxSelectionDidChange(_ notification: Notification) {
-//        updateButtonEnabledState()
-//    }
-    
+    func runMyAlert( alertMessage: String){
+        var _ = NSWindow.self
+        let alert = NSAlert()
+        alert.messageText = "ERROR ERROR ERROR"
+        alert.addButton(withTitle: "OK")
+        alert.informativeText = alertMessage
+        alert.runModal()
+    }
+   
     func updateButtonEnabledState() {
         CalculateButton.isEnabled = NameField.stringValue.isEmpty == false &&
             WeightField.stringValue.isEmpty == false &&
@@ -131,4 +148,5 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
         }
     }
 }
+
 
