@@ -66,12 +66,13 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
             HeightField.stringValue = (HeightField.stringValue.components(separatedBy: characterSet) as NSArray).componentsJoined(by: "")
         }
         
-        let weightValue = 50
-        if Int(self.WeightField.stringValue)! > weightValue {
-            self.WeightField.stringValue = String("")
-            runMyAlert(alertMessage: "The Weight should be under \(weightValue) kg")
+        let maxWeight = 60
+        if let weight = Int(self.WeightField.stringValue) {
+            if weight > maxWeight {
+                self.WeightField.stringValue = String("")
+                runMyAlert(alertMessage: "The Weight should be under \(maxWeight) kg")
+            }
         }
-        
 //        if self.WeightField.stringValue.characters.count > 1 {
 //            self.WeightField.stringValue = String(self.WeightField.stringValue.characters.last!)
 //        }
@@ -104,8 +105,9 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
     }
     
     func getOptimalRatio(mass: Double, height: Double) -> String {
-        let bodyMassIndex = mass / height * 0.1 * 2
+        let bodyMassIndex = mass / ((height * 0.01) * (height * 0.01))
         var interpretation = "ERROR"
+        print(bodyMassIndex)
         if bodyMassIndex < 18.5 {
             interpretation = "Underweight Body!"
         } else if bodyMassIndex > 18.5 && bodyMassIndex < 24.9 {
@@ -129,12 +131,14 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
 //        let valuecombo = languageComboBox.itemObjectValue(at: indexCombo)
         
         var optimalRatio = ""
-        if let weight = Double(WeightField.stringValue), let height = Double(HeightField.stringValue) {
-            optimalRatio = getOptimalRatio(mass: weight, height: height)
-        } else {
-            optimalRatio = "Not a valid number"
-            print("Not a valid number")
-        }
+        let weight = (WeightField.stringValue as NSString).doubleValue
+        let height = (HeightField.stringValue as NSString).doubleValue
+//        if let weight = Double(WeightField.stringValue), let height = Double(HeightField.stringValue) {
+        optimalRatio = getOptimalRatio(mass: weight, height: height)
+//        } else {
+//            optimalRatio = "Not a valid number"
+//            print("Not a valid number")
+//        }
     
         let age = "Age: \(calculateAge(birth: BirthdayPicker.dateValue))"
         deliverNotification(title: NameField.stringValue, subtitle: age, text: optimalRatio)
