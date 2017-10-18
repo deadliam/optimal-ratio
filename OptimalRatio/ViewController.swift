@@ -17,6 +17,10 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
     @IBOutlet weak var CalculateButton: NSButton!
     @IBOutlet weak var ResultLabel: NSTextField!
     
+    let gregorian: NSCalendar = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)!
+    let currentDate: Date = Date()
+    var components: DateComponents = DateComponents()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NameField.delegate = self
@@ -26,9 +30,20 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
         ResultLabel.delegate = self
         updateButtonEnabledState()
         NSUserNotificationCenter.default.delegate = self
+        
+        // Date range
+        var components = DateComponents()
+        components.year = -100
+        let minDate = Calendar.current.date(byAdding: components, to: Date())
+        
+        components.year = -1
+        let maxDate = Calendar.current.date(byAdding: components, to: Date())
+        
+        BirthdayPicker.minDate = minDate
+        BirthdayPicker.maxDate = maxDate
     
     }
-
+    
     func deliverNotification(title: String, subtitle: String, text: String) {
         let notification = NSUserNotification()
         notification.deliveryDate = Date()
