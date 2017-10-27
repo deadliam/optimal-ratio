@@ -81,11 +81,14 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
             HeightField.stringValue = (HeightField.stringValue.components(separatedBy: characterSet) as NSArray).componentsJoined(by: "")
         }
         
-        let maxWeight = 60
+        let maxWeight = 230
+        let minWeight = 35
         if let weight = Int(self.WeightField.stringValue) {
             if weight > maxWeight {
                 self.WeightField.stringValue = String("")
-                runMyAlert(alertMessage: "The Weight should be under \(maxWeight) kg")
+                runMyAlert(alertMessage: "The Weight should be under \(maxWeight)kg")
+            } else if weight < 35 {
+                runMyAlert(alertMessage: "The Weight should be more than \(minWeight)kg")
             }
         }
 //        if self.WeightField.stringValue.characters.count > 1 {
@@ -141,10 +144,7 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
     
     @IBAction func buttonClick(button: AnyObject) {
         print("Test log")
-        
-//        let indexCombo = languageComboBox.indexOfSelectedItem
-//        let valuecombo = languageComboBox.itemObjectValue(at: indexCombo)
-        
+
         var optimalRatio = ""
         let weight = (WeightField.stringValue as NSString).doubleValue
         let height = (HeightField.stringValue as NSString).doubleValue
@@ -157,10 +157,10 @@ class ViewController: NSViewController, NSTextFieldDelegate, NSComboBoxDelegate,
     
         let age = "Age: \(calculateAge(birth: BirthdayPicker.dateValue))"
         deliverNotification(title: NameField.stringValue, subtitle: age, text: optimalRatio)
-        ResultLabel.stringValue += optimalRatio
-        
+        ResultLabel.stringValue = optimalRatio
     }
-
+    
+    
     override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
